@@ -12,7 +12,7 @@ class Bogie {
 
     @Override
     public String toString() {
-        return "Bogie Type: " + type + ", Capacity: " + capacity;
+        return "Capacity: " + capacity;
     }
 }
 
@@ -22,24 +22,37 @@ public class TrainConsistManagementApp {
 
         System.out.println("=== Train Consist Management App ===");
 
-        // UC7 reused list
+        // Reuse list from UC7/UC8
         List<Bogie> bogies = new ArrayList<>();
 
         bogies.add(new Bogie("Sleeper", 72));
         bogies.add(new Bogie("AC Chair", 60));
         bogies.add(new Bogie("First Class", 50));
         bogies.add(new Bogie("Sleeper", 80));
+        bogies.add(new Bogie("AC Chair", 65));
 
         System.out.println("\nAll Bogies:");
-        bogies.forEach(System.out::println);
+        bogies.forEach(b -> 
+            System.out.println("Type: " + b.type + ", Capacity: " + b.capacity)
+        );
 
+        // =========================
+        // ✅ UC9: Grouping
+        // =========================
+        System.out.println("\nGrouped Bogies by Type:");
 
-        System.out.println("\nFiltered Bogies (Capacity > 60):");
+        Map<String, List<Bogie>> groupedBogies =
+                bogies.stream()
+                      .collect(Collectors.groupingBy(b -> b.type));
 
-        List<Bogie> filteredBogies = bogies.stream()
-                .filter(b -> b.capacity > 60)
-                .collect(Collectors.toList());
+        // Print grouped result
+        for (Map.Entry<String, List<Bogie>> entry : groupedBogies.entrySet()) {
 
-        filteredBogies.forEach(System.out::println);
+            System.out.println("\nBogie Type: " + entry.getKey());
+
+            for (Bogie b : entry.getValue()) {
+                System.out.println("  Capacity: " + b.capacity);
+            }
+        }
     }
 }
