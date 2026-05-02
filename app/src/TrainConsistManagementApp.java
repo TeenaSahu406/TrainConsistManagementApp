@@ -1,42 +1,68 @@
-// Train Consist Management App - UC17
-// Sorting Bogie Names using Arrays.sort()
+// Train Consist Management App - UC19
+// Binary Search for Bogie ID (with sorting precondition)
 
 import java.util.Arrays;
 
 public class TrainConsistManagementApp {
 
+    // Binary Search Method
+    public static boolean binarySearch(String[] bogieIds, String key) {
+
+        // Handle empty array
+        if (bogieIds.length == 0) {
+            return false;
+        }
+
+        // Ensure array is sorted before binary search
+        Arrays.sort(bogieIds);
+
+        int low = 0;
+        int high = bogieIds.length - 1;
+
+        while (low <= high) {
+
+            int mid = (low + high) / 2;
+
+            // Compare using compareTo()
+            int result = key.compareTo(bogieIds[mid]);
+
+            if (result == 0) {
+                return true; // Found
+            } else if (result < 0) {
+                high = mid - 1; // Search left half
+            } else {
+                low = mid + 1; // Search right half
+            }
+        }
+
+        return false; // Not found
+    }
+
     public static void main(String[] args) {
 
-        // Test Case 1: Basic unsorted array
-        String[] bogies1 = {"Sleeper", "AC Chair", "First Class", "General", "Luxury"};
-        System.out.println("Before Sorting: " + Arrays.toString(bogies1));
+        // Test Case 1: Found
+        String[] bogies1 = {"BG101","BG205","BG309","BG412","BG550"};
+        System.out.println("Search BG309: " + binarySearch(bogies1, "BG309"));
 
-        Arrays.sort(bogies1);
+        // Test Case 2: Not Found
+        System.out.println("Search BG999: " + binarySearch(bogies1, "BG999"));
 
-        System.out.println("After Sorting:  " + Arrays.toString(bogies1));
+        // Test Case 3: First Element
+        System.out.println("Search BG101: " + binarySearch(bogies1, "BG101"));
 
+        // Test Case 4: Last Element
+        System.out.println("Search BG550: " + binarySearch(bogies1, "BG550"));
 
-        // Test Case 2: Unsorted input
-        String[] bogies2 = {"Luxury", "General", "Sleeper", "AC Chair"};
-        Arrays.sort(bogies2);
-        System.out.println("Sorted (Unsorted Input): " + Arrays.toString(bogies2));
+        // Test Case 5: Single Element
+        String[] single = {"BG101"};
+        System.out.println("Search in single array: " + binarySearch(single, "BG101"));
 
+        // Test Case 6: Empty Array
+        String[] empty = {};
+        System.out.println("Search in empty array: " + binarySearch(empty, "BG101"));
 
-        // Test Case 3: Already sorted
-        String[] bogies3 = {"AC Chair", "First Class", "General"};
-        Arrays.sort(bogies3);
-        System.out.println("Sorted (Already Sorted): " + Arrays.toString(bogies3));
-
-
-        // Test Case 4: Duplicate bogie names
-        String[] bogies4 = {"Sleeper", "AC Chair", "Sleeper", "General"};
-        Arrays.sort(bogies4);
-        System.out.println("Sorted (Duplicates): " + Arrays.toString(bogies4));
-
-
-        // Test Case 5: Single element
-        String[] bogies5 = {"Sleeper"};
-        Arrays.sort(bogies5);
-        System.out.println("Sorted (Single Element): " + Arrays.toString(bogies5));
+        // Test Case 7: Unsorted Input (auto sorted inside method)
+        String[] unsorted = {"BG309","BG101","BG550","BG205","BG412"};
+        System.out.println("Search in unsorted array (BG205): " + binarySearch(unsorted, "BG205"));
     }
 }
