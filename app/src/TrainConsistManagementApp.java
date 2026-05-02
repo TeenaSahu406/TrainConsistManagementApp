@@ -1,59 +1,64 @@
-// Custom Exception
-class InvalidCapacityException extends Exception {
-    public InvalidCapacityException(String message) {
-        super(message);
-    }
-}
+// Train Consist Management App - UC16
+// Bubble Sort Implementation (No Arrays.sort / Collections.sort)
 
-// Passenger Bogie Class
-class PassengerBogie {
-
-    private String type;
-    private int capacity;
-
-    public PassengerBogie(String type, int capacity) throws InvalidCapacityException {
-
-        // Validation (Fail-Fast)
-        if (capacity <= 0) {
-            throw new InvalidCapacityException("Capacity must be greater than zero");
-        }
-
-        this.type = type;
-        this.capacity = capacity;
-    }
-
-    public String getType() {
-        return type;
-    }
-
-    public int getCapacity() {
-        return capacity;
-    }
-}
-
-// Main Class
 public class TrainConsistManagementApp {
+
+    // Method to perform Bubble Sort
+    public static void bubbleSort(int[] capacities) {
+        int n = capacities.length;
+
+        // Outer loop for passes
+        for (int i = 0; i < n - 1; i++) {
+
+            // Inner loop for comparison
+            for (int j = 0; j < n - i - 1; j++) {
+
+                // Compare adjacent elements
+                if (capacities[j] > capacities[j + 1]) {
+
+                    // Swap logic
+                    int temp = capacities[j];
+                    capacities[j] = capacities[j + 1];
+                    capacities[j + 1] = temp;
+                }
+            }
+        }
+    }
+
+    // Method to print array
+    public static void display(int[] capacities) {
+        for (int cap : capacities) {
+            System.out.print(cap + " ");
+        }
+        System.out.println();
+    }
 
     public static void main(String[] args) {
 
-        System.out.println("=== Train Consist Management App ===");
+        // Test Case 1: Basic unsorted array
+        int[] capacities1 = {72, 56, 24, 70, 60};
+        System.out.print("Before Sorting: ");
+        display(capacities1);
 
-        try {
-            // Valid Bogie
-            PassengerBogie b1 = new PassengerBogie("Sleeper", 72);
-            System.out.println("Created Bogie: " + b1.getType() + 
-                               " | Capacity: " + b1.getCapacity());
+        bubbleSort(capacities1);
 
-            // Invalid Bogie (will throw exception)
-            PassengerBogie b2 = new PassengerBogie("AC Chair", 0);
+        System.out.print("After Sorting:  ");
+        display(capacities1);
 
-            // This line will NOT execute if exception occurs above
-            System.out.println("Created Bogie: " + b2.getType());
+        // Test Case 2: Already sorted
+        int[] capacities2 = {24, 56, 60, 70, 72};
+        bubbleSort(capacities2);
 
-        } catch (InvalidCapacityException e) {
-            System.out.println("Error: " + e.getMessage());
-        }
+        // Test Case 3: Duplicate values
+        int[] capacities3 = {72, 56, 56, 24};
+        bubbleSort(capacities3);
 
-        System.out.println("Program continues safely...");
+        // Test Case 4: Single element
+        int[] capacities4 = {50};
+        bubbleSort(capacities4);
+
+        // Test Case 5: All equal values
+        int[] capacities5 = {40, 40, 40};
+        bubbleSort(capacities5);
     }
 }
